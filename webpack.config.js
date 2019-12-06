@@ -23,7 +23,7 @@ const baseConfig = {
 
 const clientConfig = merge(baseConfig, {
     entry: {
-        ['static/client']: './src/client.ts',
+        ['static/client']: './src/client.tsx',
     },
     plugins: [
         new HtmlWebpackPlugin({
