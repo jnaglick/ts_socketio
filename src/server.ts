@@ -1,5 +1,3 @@
-import { runInThisContext } from "vm";
-
 const express = require('express')
 const http = require('http')
 const socketio = require('socket.io')
@@ -30,8 +28,6 @@ class Chat {
 const ChatDB: Array<Chat> = []
 
 socketServer.of(/^\/chat\/\d+$/).on('connection', function(socket) {
-  console.log(`got connection to ${socket.nsp.name}`);
-
   const chatId = socket.nsp.name.match(/\d+/)[0];
   let chat = ChatDB.find((chat) => chat.name == chatId);
   if (!chat) {

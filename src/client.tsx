@@ -35,34 +35,32 @@ class Chat extends Component<any, any> {
 
         this.chatSocket = socketClient(`/chat/${roomNumber}`, { transports: ['websocket'] });
 
+        const addMessage = (message) => {
+            this.setState({
+                msgs: [ ...this.state.msgs, message ]
+            });
+        }
+
         const fetchUserList = () => {
             this.chatSocket.emit('user_list', ({ users: userList }) => {
-                console.log('received userList')
                 this.setState({
                     userList
                 })
             });
         }
-        fetchUserList();
 
         this.chatSocket.on('user_joined_chat', ({ user }) => {
-            this.setState({
-                msgs: [ ...this.state.msgs, `Someone joined: ${user.id}` ]
-            });
+            addMessage(`Someone joined: ${user.id}`);
             fetchUserList();
         });
 
         this.chatSocket.on('user_left_chat', ({ user }) => {
-            this.setState({
-                msgs: [ ...this.state.msgs, `Someone left: ${user.id}` ]
-            });
+            addMessage(`Someone left: ${user.id}`);
             fetchUserList();
         });
 
         this.chatSocket.on('message_from_user', ({ user, message }) => {
-            this.setState({
-                msgs: [ ...this.state.msgs, `${user.id}: ${message}` ]
-            })
+            addMessage(`${user.id}: ${message}`);
         });
 
         this.chatSocket.on('typing_from_user', ({ user }) => {
@@ -84,7 +82,8 @@ class Chat extends Component<any, any> {
 
         this.messageSubmit = (event) => {
             this.chatSocket.emit('message_from_user', this.state.inProgressMsg);
-
+            addMessage(`You: ${this.state.inProgressMsg}`);
+            
             this.setState({
                 inProgressMsg: ''
             })
@@ -99,6 +98,8 @@ class Chat extends Component<any, any> {
                 inProgressMsg: event.target.value
             })
         }
+
+        fetchUserList();
     }
 
     render({}, { roomNumber, userList, msgs, someoneIsTyping, inProgressMsg }) {
