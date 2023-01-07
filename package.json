@@ -14,7 +14,7 @@
     "@types/node": "12.12.14",
     "@types/socket.io": "2.1.4",
     "@types/socket.io-client": "1.4.32",
-    "html-webpack-plugin": "3.2.0",
+    "html-webpack-plugin": "5.5.0",
     "ts-loader": "6.2.1",
     "typescript": "3.7.3",
     "webpack": "4.41.2",
